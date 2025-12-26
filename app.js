@@ -6,7 +6,7 @@ const loadingIndicator = document.getElementById("loadingIndicator");
 let quotes = [];
 let quoteIds = new Set();
 let preloadedQuotes = [];
-const PRELOAD_BUFFER = 1;
+const PRELOAD_BUFFER = 8;
 let currentIndex = 0;
 
 // Fetch a quote from the API
@@ -94,7 +94,7 @@ container.addEventListener("scroll", () => {
       const cardCenter = cardRect.top + cardRect.height / 2;
       const containerCenter = containerRect.top + containerRect.height / 2;
 
-      if (Math.abs(cardCenter - containerCenter) < cardRect.height / 2) {
+      if (Math.ceil(cardCenter - containerCenter) < cardRect.height / 2) {
         currentIndex = index;
 
         if (index >= cards.length - 2) {
