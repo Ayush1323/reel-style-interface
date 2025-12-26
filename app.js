@@ -3,8 +3,6 @@ const container = document.getElementById("reelsContainer");
 const autoScrollButton = document.getElementById("autoScrollButton");
 const loadingIndicator = document.getElementById("loadingIndicator");
 
-let quotes = [];
-let quoteIds = new Set();
 let preloadedQuotes = [];
 const PRELOAD_BUFFER = 8;
 let currentIndex = 0;
@@ -20,10 +18,7 @@ async function fetchQuote() {
       text: data.quote,
     };
 
-    if (!quoteIds.has(newQuote.id)) {
-      return newQuote;
-    }
-    return null;
+    return newQuote;
   } catch (err) {
     console.error("Error fetching quote:", err);
     return null;
@@ -46,14 +41,9 @@ function createReelCard(quote) {
 
 // Render the quotes in the container of Created Reel Cards
 function renderQuotes(newQuotes) {
-  const fragment = document.createDocumentFragment();
-
   newQuotes.forEach((q) => {
-    fragment.appendChild(createReelCard(q));
+    container.appendChild(createReelCard(q));
   });
-
-  container.appendChild(fragment);
-  quotes = quotes.concat(newQuotes);
 }
 
 // Preload quotes to maintain a buffer
@@ -62,7 +52,6 @@ async function preloadQuotes() {
     const quote = await fetchQuote();
     if (quote) {
       preloadedQuotes.push(quote);
-      quoteIds.add(quote.id);
     }
   }
 }
