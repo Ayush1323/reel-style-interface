@@ -6,26 +6,37 @@ Each quote appears as a **full-screen vertical reel**, loaded dynamically from a
 
 ---
 
+## 🌐 Live Demo
+
+- **Live Preview:** 👉 https://ayush1323.github.io/reel-style-interface/
+
+---
+
 ## ✨ Features
 
 - ✅ **Full-Screen Reel Cards**
+
   - One quote per screen (100vh)
   - Vertical snap scrolling
   - Only one reel visible at a time
 
 - ♾️ **Infinite Scrolling**
+
   - New quote reels load automatically while scrolling
   - No visible loader at any point
 
 - 🚀 **Background Preloading**
+
   - Always keeps 2–3 quotes preloaded
   - User never has to wait for data
 
 - 🎞️ **Smooth Animations**
+
   - Light fade-in animation on reel entry
   - Smooth reel-like scrolling experience
 
 - 📱 **Mobile-First UI**
+
   - Optimized for mobile screens
   - Uses `vh`, `vw`, and responsive layout
 
@@ -39,4 +50,3 @@ Each quote appears as a **full-screen vertical reel**, loaded dynamically from a
 ## 🔗 Quote API Used
 
 This project fetches quotes from the following API: https://kimiquotes.pages.dev/api/quote
-
