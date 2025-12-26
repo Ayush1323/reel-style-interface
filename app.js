@@ -1,5 +1,4 @@
 const API_URL = "https://kimiquotes.pages.dev/api/quote";
-
 const container = document.getElementById("reelsContainer");
 const autoScrollButton = document.getElementById("autoScrollButton");
 const loadingIndicator = document.getElementById("loadingIndicator");
@@ -10,6 +9,7 @@ let preloadedQuotes = [];
 const PRELOAD_BUFFER = 1;
 let currentIndex = 0;
 
+// Fetch a quote from the API
 async function fetchQuote() {
   try {
     const response = await fetch(API_URL);
@@ -30,34 +30,7 @@ async function fetchQuote() {
   }
 }
 
-async function preloadQuotes() {
-  while (preloadedQuotes.length < PRELOAD_BUFFER) {
-    const quote = await fetchQuote();
-    if (quote) {
-      preloadedQuotes.push(quote);
-      quoteIds.add(quote.id);
-    }
-  }
-}
-
-async function getNextQuote() {
-  if (preloadedQuotes.length === 0) {
-    if (loadingIndicator) loadingIndicator.style.display = "block";
-    await preloadQuotes();
-    if (loadingIndicator) loadingIndicator.style.display = "none";
-  }
-
-  const quote = preloadedQuotes.shift();
-
-  if (quote) {
-    renderQuotes([quote]);
-  }
-
-  if (preloadedQuotes.length < PRELOAD_BUFFER) {
-    preloadQuotes();
-  }
-}
-
+// Create a new reel card element
 function createReelCard(quote) {
   const card = document.createElement("div");
   card.className = "reel-card";
@@ -71,6 +44,7 @@ function createReelCard(quote) {
   return card;
 }
 
+// Render the quotes in the container of Created Reel Cards
 function renderQuotes(newQuotes) {
   const fragment = document.createDocumentFragment();
 
@@ -82,14 +56,31 @@ function renderQuotes(newQuotes) {
   quotes = quotes.concat(newQuotes);
 }
 
-function scrollToIndex(index) {
-  const cards = container.querySelectorAll(".reel-card");
-  if (cards[index]) {
-    cards[index].scrollIntoView({ behavior: "smooth", block: "start" });
-    currentIndex = index;
+// Preload quotes to maintain a buffer
+async function preloadQuotes() {
+  while (preloadedQuotes.length < PRELOAD_BUFFER) {
+    const quote = await fetchQuote();
+    if (quote) {
+      preloadedQuotes.push(quote);
+      quoteIds.add(quote.id);
+    }
   }
 }
 
+// Get the next quote and render it
+async function getNextQuote() {
+  const quote = preloadedQuotes.shift();
+
+  if (quote) {
+    renderQuotes([quote]);
+  }
+
+  if (preloadedQuotes.length < PRELOAD_BUFFER) {
+    preloadQuotes();
+  }
+}
+
+// Scroll event listener needs to detect the centered card
 let isScrolling;
 container.addEventListener("scroll", () => {
   clearTimeout(isScrolling);
@@ -114,6 +105,7 @@ container.addEventListener("scroll", () => {
   }, 100);
 });
 
+// Initialize the app
 async function init() {
   if (loadingIndicator) loadingIndicator.style.display = "block";
 
